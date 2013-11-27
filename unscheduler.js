@@ -3,7 +3,7 @@ Rooms = new Meteor.Collection("rooms");
 
 if (Meteor.isClient) {
   Template.room_list.rooms = function () {
-    return Rooms.find({}, {sort: {name: 1}});
+    return Rooms.find({}, {sort: {position: 1}});
   };
 
   Template.time_list.times = function () {
@@ -12,15 +12,20 @@ if (Meteor.isClient) {
 
   Template.room_form.events({
     'click #add-room' : function () {
+      // position is automatically set as the length of the Rooms array.
+      var allRooms = Rooms.find();
+
       roomName = $('#room-name').val();
-      Rooms.insert({name: roomName});
+      Rooms.insert({ name: roomName, position: allRooms.count() });
       $('#room-name').val('');
     },
 
     'keypress input#room-name': function (evt) {
       if (evt.which === 13) {
+        var allRooms = Rooms.find();
+
         roomName = $('#room-name').val();
-        Rooms.insert({name: roomName});
+        Rooms.insert({name: roomName, position: allRooms.count() });
         $('#room-name').val('');
       }
     }
