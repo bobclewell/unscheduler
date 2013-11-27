@@ -6,9 +6,25 @@ if (Meteor.isClient) {
     return Rooms.find({}, {sort: {position: 1}});
   };
 
+
   Template.time_list.times = function () {
     return Times.find({}, {sort: {name: 1}});
   };
+
+
+  Template.room_info.events({
+    'click input.delete' : function () {
+      Rooms.remove(this._id);
+    }
+  });
+
+
+  Template.time_info.events({
+    'click input.delete' : function () {
+      Times.remove(this._id);
+    }
+  });
+
 
   Template.room_form.events({
     'click #add-room' : function () {
@@ -31,6 +47,7 @@ if (Meteor.isClient) {
     }
   });
 
+
   Template.time_form.events({
     'click #add-time' : function () {
       timeName = $('#time-name').val();
@@ -47,6 +64,7 @@ if (Meteor.isClient) {
     }
   });  
 }
+
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
